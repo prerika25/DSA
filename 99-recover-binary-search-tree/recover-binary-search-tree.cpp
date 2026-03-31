@@ -11,24 +11,23 @@
  */
 class Solution {
 public:
-    void inorderStore(TreeNode* root, vector<int>& ans) {
-        if(!root) return;
-        inorderStore(root->left, ans);
-        ans.push_back(root->val);
-        inorderStore(root->right, ans);
-    }
-    void inorderFix(TreeNode* root, vector<int>& ans, int &i) {
-        if(!root) return;
-        inorderFix(root->left, ans, i);
-        root->val = ans[i++];
-        inorderFix(root->right, ans, i);
+    TreeNode* first = NULL;
+    TreeNode* second = NULL;
+    TreeNode* prev = NULL;
+    void inorder(TreeNode* root) {
+        if(root == NULL) return;
+        inorder(root->left);
+        if(prev && prev->val > root->val) {
+            if(first == NULL) {
+                first = prev;
+            }
+            second = root;
+        }
+        prev = root;
+        inorder(root->right);
     }
     void recoverTree(TreeNode* root) {
-        vector<int> ans;
-        inorderStore(root, ans);
-        sort(ans.begin(), ans.end());        
-        int i = 0;
-        inorderFix(root, ans, i);
+        inorder(root);
+        swap(first->val, second->val);
     }
 };
-    
