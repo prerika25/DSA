@@ -9,35 +9,32 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+class Node{
+    public :
+    int maxNode,minNode,Sum;
+
+    Node(int minNode,int maxNode,int Sum){
+        this->maxNode = maxNode;
+        this->minNode = minNode;
+        this->Sum = Sum;
+    }
+};
 class Solution {
 public:
     int ans = 0;
-
-    // {isBST, min, max, sum}
-    vector<int> solve(TreeNode* root) {
-        if (!root)
-            return {1, INT_MAX, INT_MIN, 0};
-
-        vector<int> L = solve(root->left);
-        vector<int> R = solve(root->right);
-
-        // Check if current subtree is BST
-        if (L[0] && R[0] && L[2] < root->val && root->val < R[1]) {
-            int sum = L[3] + R[3] + root->val;
-            ans = max(ans, sum);
-
-            int mn = min(L[1], root->val);
-            int mx = max(R[2], root->val);
-
-            return {1, mn, mx, sum};
+    Node helper(TreeNode* root){
+        if(!root) return Node(INT_MAX,INT_MIN,0);
+        auto left = helper(root->left);
+        auto right = helper(root->right);
+        if(left.maxNode < root->val && right.minNode > root->val){
+            int curSum = left.Sum + right.Sum + root->val;
+            ans = max(ans,curSum);
+            return Node(min(root->val,left.minNode),max(root->val,right.maxNode),curSum);
         }
-
-        // Not a BST
-        return {0, 0, 0, 0};
+        return Node(INT_MIN,INT_MAX,0);
     }
-
     int maxSumBST(TreeNode* root) {
-        solve(root);
+        helper(root);
         return ans;
     }
 };
