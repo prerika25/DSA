@@ -15,9 +15,5 @@ public:
        vector<int>ans;
        getallsubsets(nums,ans,0,allsubsets);
        return allsubsets;
-
-
-
-        
     }
 };
