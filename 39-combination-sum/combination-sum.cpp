@@ -17,18 +17,11 @@ public:
         getallcombin(arr,idx,tar-arr[idx],ans,combin);
         combin.pop_back();
         getallcombin(arr,idx+1,tar,ans,combin);
-
-
-
     }
-
-
     vector<vector<int>> combinationSum(vector<int>&arr, int target) {
         vector<vector<int>>ans;
         vector<int>combin;
         getallcombin(arr,0,target,ans,combin);
-        return ans;
-
-        
+        return ans;       
     }
 };
